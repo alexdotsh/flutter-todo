@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           setState(() {
                             items.removeAt(index);
                           });
-                          Scaffold.of(context).showSnackBar(SnackBar(content: Text("$item dismissed")));
+                          Scaffold.of(context).showSnackBar(SnackBar(content: Text("$item removed")));
                         },
                         background: Container(color: Colors.red),
                         child: ListTile(title: Text('$item')),
