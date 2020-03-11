@@ -30,7 +30,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<String> items = [];
   final textController = TextEditingController();
-  String name = '';
 
   _showDialog() {
     showDialog(
@@ -85,10 +84,12 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
                 child: ListView.builder(
                     itemCount: items.length,
                     itemBuilder: (context, index) {
@@ -102,13 +103,24 @@ class _MyHomePageState extends State<MyHomePage> {
                           Scaffold.of(context).showSnackBar(SnackBar(content: Text("$item removed")));
                         },
                         background: Container(color: Colors.red),
-                        child: ListTile(title: Text('$item')),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Colors.black,
+                                width: 1.0
+                              ),
+                            ),
+                          ),
+                          child: ListTile(title: Text('$item')),
+                        ),
                       );
-                    }
+                    },
                 ),
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        )
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showDialog,
