@@ -21,15 +21,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -39,18 +30,63 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<String> items = [];
   final textController = TextEditingController();
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  _showDialog() {
+    showDialog(
+      context: context,
+      child: AlertDialog(
+        contentPadding: const EdgeInsets.all(16.0),
+        content: Row(
+          children: <Widget>[
+            Expanded(
+              child: TextField(
+                controller: textController,
+                onSubmitted: (String text) {
+                  items.add(text);
+                  textController.clear();
+                  setState(() {});
+                },
+                autofocus: true,
+                decoration: InputDecoration(
+                  labelText: 'Task', hintText: 'e.g. Buy Milk'
+                ),
+              )
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          FlatButton(
+            child: Text('Add'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
+        ],
+      )
+    );
+  }
 
-    @override
-    void dispose() {
-      textController.dispose();
-      super.dispose();
-    }
+  _addTask() {
+    TextField(
+      controller: textController,
+      onSubmitted: (text) {
+        items.add(text);
+        textController.clear();
+        setState(() {});
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
   }
 
   @override
@@ -83,8 +119,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: _showDialog,
+        tooltip: 'Add todo',
         child: Icon(Icons.edit),
       ),
     );
