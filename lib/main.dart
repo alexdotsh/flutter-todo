@@ -41,11 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
             Expanded(
               child: TextField(
                 controller: textController,
-                onSubmitted: (String text) {
-                  items.add(text);
-                  textController.clear();
-                  setState(() {});
-                },
                 autofocus: true,
                 decoration: InputDecoration(
                   labelText: 'Task', hintText: 'e.g. Buy Milk'
@@ -111,9 +106,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: ListView.builder(
                     itemCount: items.length,
                     itemBuilder: (context, index) {
-                      return Text(items[index]);
+                      final item = items[index];
+                      return Dismissible(
+                        key: Key(item),
+                        onDismissed: (direction) {
+                          setState(() {
+                            items.removeAt(index);
+                          });
+                          Scaffold.of(context).showSnackBar(SnackBar(content: Text("$item dismissed")));
+                        },
+                        background: Container(color: Colors.red),
+                        child: ListTile(title: Text('$item')),
+                      );
                     }
-                )
+                ),
             ),
           ],
         ),
