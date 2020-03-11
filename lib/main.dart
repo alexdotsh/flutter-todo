@@ -88,14 +88,6 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextField(
-              controller: textController,
-              onSubmitted: (text) {
-                items.add(text);
-                textController.clear();
-                setState(() {});
-              },
-            ),
             Expanded(
                 child: ListView.builder(
                     itemCount: items.length,
