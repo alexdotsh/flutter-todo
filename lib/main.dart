@@ -21,15 +21,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -39,18 +30,52 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<String> items = [];
   final textController = TextEditingController();
-  int _counter = 0;
+  String name = '';
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  _showDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      child: AlertDialog(
+        contentPadding: const EdgeInsets.all(16.0),
+        content: Row(
+          children: <Widget>[
+            Expanded(
+              child: TextField(
+                controller: textController,
+                autofocus: true,
+                decoration: InputDecoration(
+                  labelText: 'Task', hintText: 'e.g. Buy Milk'
+                ),
+              )
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          FlatButton(
+            child: Text('Add'),
+            onPressed: () {
+              items.add(textController.text);
+              setState(() {});
+              textController.clear();
+              Navigator.pop(context);
+            },
+          )
+        ],
+      )
+    );
+  }
 
-    @override
-    void dispose() {
-      textController.dispose();
-      super.dispose();
-    }
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
   }
 
   @override
@@ -63,28 +88,31 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextField(
-              controller: textController,
-              onSubmitted: (text) {
-                items.add(text);
-                textController.clear();
-                setState(() {});
-              },
-            ),
             Expanded(
                 child: ListView.builder(
                     itemCount: items.length,
                     itemBuilder: (context, index) {
-                      return Text(items[index]);
+                      final item = items[index];
+                      return Dismissible(
+                        key: Key(item),
+                        onDismissed: (direction) {
+                          setState(() {
+                            items.removeAt(index);
+                          });
+                          Scaffold.of(context).showSnackBar(SnackBar(content: Text("$item removed")));
+                        },
+                        background: Container(color: Colors.red),
+                        child: ListTile(title: Text('$item')),
+                      );
                     }
-                )
+                ),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: _showDialog,
+        tooltip: 'Add todo',
         child: Icon(Icons.edit),
       ),
     );
