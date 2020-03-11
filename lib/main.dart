@@ -30,10 +30,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<String> items = [];
   final textController = TextEditingController();
+  String name = '';
 
   _showDialog() {
     showDialog(
       context: context,
+      barrierDismissible: false,
       child: AlertDialog(
         contentPadding: const EdgeInsets.all(16.0),
         content: Row(
@@ -59,22 +61,14 @@ class _MyHomePageState extends State<MyHomePage> {
           FlatButton(
             child: Text('Add'),
             onPressed: () {
+              items.add(textController.text);
+              setState(() {});
+              textController.clear();
               Navigator.pop(context);
             },
           )
         ],
       )
-    );
-  }
-
-  _addTask() {
-    TextField(
-      controller: textController,
-      onSubmitted: (text) {
-        items.add(text);
-        textController.clear();
-        setState(() {});
-      },
     );
   }
 
