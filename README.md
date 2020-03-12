@@ -14,3 +14,18 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Setup
+Clone the repo and cd into it
+```bash
+$ git clone https://github.com/alexmirkhaydarov/flutter-todo.git
+$ cd flutter-todo
+```
+Run iOS simulator
+```bash
+$ open -a Simulator
+```
+Launch the app
+```bash
+$ flutter run
+```
